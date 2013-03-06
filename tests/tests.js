@@ -1604,7 +1604,7 @@
           }
       })
     })
-    
+
     test('jsonpRequest', function (complete) {
       var ts = +new Date()
       ajax({
@@ -1622,6 +1622,28 @@
           }
       })
     })
+
+    test('successful jsonpRequest with timeout does not call abort', function (complete) {
+      var aborted = false;
+
+      ajax({
+          url: '/tests/fixtures/fixtures_jsonp.jsonp'
+        , type: 'jsonp'
+        , timeout: 100
+        , error: function (err) {
+            aborted = true;
+          }
+      })
+
+      setTimeout(function () {
+        ok(
+            aborted == false
+          , 'error callback was not called'
+        )
+        complete()
+      }, 200)
+    })
+
   })
 
   start()
